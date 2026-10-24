@@ -1,10 +1,10 @@
-// 개발 스펙과 다이어그램이 인용할 수 있는 원문 (docs/dev-guide.md 4장 출처 모양).
+// 개발 스펙이 인용할 수 있는 원문 (docs/dev-guide.md 4장 출처 모양).
 // 출처는 번호(쉼표로 여럿) 또는 "곳 › 원문" 경로다. 앞의 "PRD › ", "기획 상세 스펙 › "는 떼고 본다.
 import { SEP, linePaths } from './spec.mjs';
 
 const PREFIXES = ['PRD', '기획 PRD', '기획 상세 스펙', '개발 스펙'];
 const LABELS = { needs: '원하는 것', patterns: '행동 패턴', pains: '불편' };
-export const ID = /^(BR|FN|G|P|R|F|D|A|M|C|E|N|T|V|S)\d+(-\d+)?$/;
+export const ID = /^(BR|FN|G|P|R|F|D|A|M|C|E|N|T|V)\d+(-\d+)?$/;
 
 // { paths: Map(경로 → 문서 이름), ids: Set(번호) }
 export function citable(brief, plan, spec) {
@@ -48,5 +48,5 @@ export function resolve(text, sources, devIds = new Set()) {
   return { ok: false, ids: [], path: value };
 }
 
-// 출처 경로가 트리의 그 줄이거나 그 아래 줄을 가리키는가.
+// 출처 경로가 흐름의 그 줄이거나 그 아래 줄을 가리키는가.
 export const covers = (path, target) => path === target || path.startsWith(target + SEP);
