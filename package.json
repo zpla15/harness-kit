@@ -1,6 +1,6 @@
 {
   "name": "spec-planning",
-  "description": "어떤 입력으로 시작해도 같은 구조, 같은 품질의 기획서를 만드는 기획 파이프라인",
+  "description": "기획·개발 스펙 인터뷰 플러그인과 검사 CLI",
   "type": "module",
   "private": true,
   "engines": {
