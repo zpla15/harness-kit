@@ -39,7 +39,7 @@
 /plugin install spec-planning@spec-planning
 ```
 
-이 PC에서는 로컬 경로로 추가해도 된다.
+저장소를 clone 했다면 그 폴더 경로로 추가해도 된다.
 
 ```text
 /plugin marketplace add <clone한 폴더 경로>
