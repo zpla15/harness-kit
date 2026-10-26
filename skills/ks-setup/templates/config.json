@@ -3,6 +3,7 @@
   "commit": "브랜치 + PR",
   "track": false,
   "verify": ["npm test"],
+  "decisions": ".harness/decisions.md",
   "baseline": {
     "date": "2026-10-26",
     "passed": 40,

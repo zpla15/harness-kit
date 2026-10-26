@@ -1,7 +1,7 @@
 {
   "name": "harness-kit",
   "description": "프로젝트 셋업, 인터뷰로 쓰는 기획·개발 스펙, 문서 기준 구현 검수, 세션 인계를 잇는 하네스 플러그인",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": {
     "name": "zpla15"
   },

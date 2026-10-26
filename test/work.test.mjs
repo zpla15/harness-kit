@@ -58,12 +58,14 @@ test('세션 시작: 설정, 진행 기록, 남은 작업, 진행 중인 기획�
   mkdirSync(join(project, '.harness'));
   writeFileSync(join(project, '.harness/config.json'), JSON.stringify({ type: '진행된 팀', commit: '브랜치 + PR', verify: ['npm test'] }));
   writeFileSync(join(project, '.harness/progress.md'), '# 진행 기록\n\n## 다음 할 일\n\n1. /ks-check post-edit\n');
+  writeFileSync(join(project, '.harness/decisions.md'), '# 결정 기록\n\n### 2026-10-26 · 배포는 홈서버\n\n- 이유: 비용\n\n### 2026-10-20 · DB는 PostgreSQL\n');
   mkdirSync(join(project, '.product-planning/comment-edit'), { recursive: true });
   const text = spawnSync('node', [HOOK, 'session-start'], { input: JSON.stringify({ cwd: project }), encoding: 'utf8' }).stdout;
   assert.match(text, /설정: 유형 진행된 팀 · 커밋 브랜치 \+ PR · 검증 npm test/);
   assert.match(text, /1\. \/ks-check post-edit/);
   assert.match(text, /남은 개발 작업: post-edit T1, T2, T3/);
   assert.match(text, /진행 중인 기획: \.product-planning\/comment-edit/);
+  assert.match(text, /최근 결정 \(\.harness\/decisions\.md\):\n- 2026-10-26 · 배포는 홈서버\n- 2026-10-20 · DB는 PostgreSQL/, '새 결정부터 제목만 보인다');
 });
 
 test('압축 직전 저장: 자동 저장 칸만 덮어쓰고 위쪽 기록은 그대로 둔다', () => {

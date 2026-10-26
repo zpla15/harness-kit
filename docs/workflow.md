@@ -62,6 +62,7 @@
 <프로젝트>/.harness/
 ├─ config.json   유형, 커밋 방식, 검증 명령, 기준선
 ├─ progress.md   지금 상태, 다음 할 일, 막힌 것, 기록 (+ 훅의 자동 저장 칸)
+├─ decisions.md  프로젝트 전체 결정 기록 (날짜, 결정, 이유, 버린 대안)
 └─ history.md    progress.md에서 밀려난 오래된 기록
 ```
 
@@ -73,6 +74,7 @@
 | `commit` | `main에 바로` `브랜치 + PR` |
 | `track` | `true`면 `.harness/`를 git에 올린다. `false`면 `.git/info/exclude`로 뺀다 |
 | `verify` | 검증 명령 목록. 앞에서부터 차례로 돌린다 |
+| `decisions` | 결정 기록 경로. 기본 `.harness/decisions.md`, 프로젝트에 이미 있으면 그 경로 |
 | `baseline` | 셋업 때 돌린 결과: `date` `passed` `failed` `knownFailures` |
 
 팀 프로젝트는 `track: false`를 추천한다. 내 작업 기록이 팀 저장소에 섞이지 않고, 프로젝트 `.gitignore`도 건드리지 않는다.
@@ -114,11 +116,21 @@
 | 막힌 것·정할 것 | 사람이 답할 것 |
 | 기록 | 날짜, 한 일, 커밋·PR. 30줄이 넘으면 history.md로 |
 
+### 결정 기록
+
+| 어디에 | 무엇을 |
+|---|---|
+| 개발 스펙 `dev.md`의 D | 기능 하나 안의 결정 (그 기능 문서와 함께 산다) |
+| `decisions.md` | 여러 기능이나 프로젝트 전체에 걸친 결정 (스택, 구조, 배포, 규칙) |
+
+- `/ks-setup`이 셋업에서 정한 것을 첫 결정으로 쓰고, `/ks-handoff`가 세션에서 새로 정한 것을 더한다.
+- 사람이 정한 것만 쓴다. 뒤집은 결정은 지우지 않고 `뒤집힘`으로 남긴다. 왜 바꿨는지가 다음 사람에게 필요하다.
+
 ### 훅
 
 | 훅 | 언제 | 하는 일 |
 |---|---|---|
-| SessionStart | 새 세션, 이어하기, `/clear`, 압축 뒤 | config 요약, progress.md, 남은 작업(T), 진행 중인 기획 폴더를 대화 맥락에 넣는다 |
+| SessionStart | 새 세션, 이어하기, `/clear`, 압축 뒤 | config 요약, progress.md, 최근 결정 5개 제목, 남은 작업(T), 진행 중인 기획 폴더를 대화 맥락에 넣는다 |
 | PreCompact | 대화가 압축되기 직전 | progress.md 맨 아래 `## 자동 저장` 칸에 시각, 브랜치, 최근 커밋, 바뀐 파일, 남은 작업을 덮어쓴다 |
 
 - 훅은 `.harness/`도 기획 폴더도 없는 프로젝트에서는 아무것도 하지 않는다.

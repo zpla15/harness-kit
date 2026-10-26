@@ -10,6 +10,7 @@ export const STATE_DIR = '.harness';
 export const AUTO_HEAD = '## 자동 저장';
 const MAX_PROGRESS_LINES = 80;
 const MAX_STATUS_LINES = 20;
+const MAX_DECISIONS = 5;
 
 const progressPath = (project) => join(project, STATE_DIR, 'progress.md');
 
@@ -47,12 +48,19 @@ export function openTasks(project) {
   return result;
 }
 
+// 결정 기록에서 새 결정부터 제목 몇 개만 뽑는다. 본문은 필요할 때 파일을 읽는다.
+export function recentDecisions(project, config = readConfig(project), limit = MAX_DECISIONS) {
+  const path = join(project, config?.decisions ?? join(STATE_DIR, 'decisions.md'));
+  if (!existsSync(path)) return [];
+  return readFileSync(path, 'utf8').split('\n').filter((line) => /^#{2,3} /.test(line)).map((line) => line.replace(/^#+ /, '').trim()).slice(0, limit);
+}
+
 export function sessionContext(project) {
   const config = readConfig(project);
   const progress = existsSync(progressPath(project)) ? readFileSync(progressPath(project), 'utf8').trim() : '';
   const planning = dirs(join(project, WORK_DIR));
   const tasks = openTasks(project);
-  if (!config && !progress && !planning.length && !tasks.length) return '';
+  if (!config && !progress && !planning.length && !tasks.length && !existsSync(join(project, STATE_DIR))) return '';
   const out = ['[harness-kit] 이 프로젝트에서 이어서 할 일이다. 사용자가 다른 일을 시키면 그 일을 먼저 한다.'];
   if (config) out.push(`설정: 유형 ${config.type ?? '?'} · 커밋 ${config.commit ?? '?'} · 검증 ${(config.verify ?? []).join(' && ') || '없음'}`);
   if (progress) {
@@ -60,6 +68,8 @@ export function sessionContext(project) {
     out.push('', `--- ${STATE_DIR}/progress.md ---`, ...lines.slice(0, MAX_PROGRESS_LINES));
     if (lines.length > MAX_PROGRESS_LINES) out.push(`(… ${lines.length - MAX_PROGRESS_LINES}줄 더 있다. 필요하면 파일을 읽는다)`);
   }
+  const decisions = recentDecisions(project, config);
+  if (decisions.length) out.push('', `최근 결정 (${config?.decisions ?? `${STATE_DIR}/decisions.md`}):`, ...decisions.map((title) => `- ${title}`));
   if (tasks.length) out.push('', '남은 개발 작업: ' + tasks.map(({ feature, left }) => `${feature} ${left.join(', ')}`).join(' / '));
   if (planning.length) out.push(`진행 중인 기획: ${planning.map((name) => `${WORK_DIR}/${name}`).join(', ')} (/ks-plan 또는 /ks-dev로 잇는다)`);
   return out.join('\n');
