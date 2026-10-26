@@ -59,11 +59,13 @@ test('세션 시작: 설정, 진행 기록, 남은 작업, 진행 중인 기획�
   writeFileSync(join(project, '.harness/config.json'), JSON.stringify({ type: '진행된 팀', commit: '브랜치 + PR', verify: ['npm test'] }));
   writeFileSync(join(project, '.harness/progress.md'), '# 진행 기록\n\n## 다음 할 일\n\n1. /ks-check post-edit\n');
   writeFileSync(join(project, '.harness/decisions.md'), '# 결정 기록\n\n### 2026-10-26 · 배포는 홈서버\n\n- 이유: 비용\n\n### 2026-10-20 · DB는 PostgreSQL\n');
+  mkdirSync(join(project, '.harness/lite'));
+  writeFileSync(join(project, '.harness/lite/letter-schedule.md'), '# 편지 예약\n\n## 요구사항\n\n- R1 예약 발송\n  - R1-1 1분 안에 간다\n\n## 작업 계획\n\n- [x] T1 컬럼. 근거: R1\n- [ ] T2 API. 근거: R1-1\n\n## 검증\n\n- V1 R1-1 · 1분 안에 간다.\n');
   mkdirSync(join(project, '.product-planning/comment-edit'), { recursive: true });
   const text = spawnSync('node', [HOOK, 'session-start'], { input: JSON.stringify({ cwd: project }), encoding: 'utf8' }).stdout;
   assert.match(text, /설정: 유형 진행된 팀 · 커밋 브랜치 \+ PR · 검증 npm test/);
   assert.match(text, /1\. \/ks-check post-edit/);
-  assert.match(text, /남은 개발 작업: post-edit T1, T2, T3/);
+  assert.match(text, /남은 개발 작업: post-edit T1, T2, T3 \/ lite\/letter-schedule T2/, '/ks-lite 정리의 남은 작업도 보인다');
   assert.match(text, /진행 중인 기획: \.product-planning\/comment-edit/);
   assert.match(text, /최근 결정 \(\.harness\/decisions\.md\):\n- 2026-10-26 · 배포는 홈서버\n- 2026-10-20 · DB는 PostgreSQL/, '새 결정부터 제목만 보인다');
 });

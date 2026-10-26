@@ -32,7 +32,7 @@ function readConfig(project) {
 
 const dirs = (path) => (existsSync(path) ? readdirSync(path, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => entry.name) : []);
 
-// docs/product/{기능}/dev.md 가운데 체크 안 된 작업이 남은 것.
+// docs/product/{기능}/dev.md와 .harness/lite/{기능}.md 가운데 체크 안 된 작업이 남은 것.
 export function openTasks(project) {
   const result = [];
   for (const feature of dirs(join(project, 'docs', 'product'))) {
@@ -43,6 +43,15 @@ export function openTasks(project) {
       if (left.length) result.push({ feature, left });
     } catch {
       // 읽을 수 없는 개발 스펙은 세션 시작을 막지 않는다.
+    }
+  }
+  const lite = join(project, STATE_DIR, 'lite');
+  for (const file of existsSync(lite) ? readdirSync(lite).filter((name) => name.endsWith('.md')) : []) {
+    try {
+      const { left } = workItems(join(lite, file));
+      if (left.length) result.push({ feature: `lite/${file.slice(0, -3)}`, left });
+    } catch {
+      // 위와 같다.
     }
   }
   return result;

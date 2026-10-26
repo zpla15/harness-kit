@@ -23,8 +23,8 @@ argument-hint: "[기능 영어 이름 또는 dev.md 경로]"
 ## 2. 대상 정하기
 
 1. `.harness/config.json`이 없으면 `/ks-setup`을 먼저 하자고 알린다. 사용자가 그냥 하자고 하면 검증 명령만 물어 진행한다.
-2. 대상이 기능 이름이면 `docs/product/{기능}/dev.md`, 경로면 그 파일을 쓴다.
-3. 비어 있으면 `.harness/progress.md`의 하고 있는 일, 그리고 체크 안 된 작업이 남은 `docs/product/*/dev.md`를 후보로 보여 주고 고르게 한다.
+2. 대상이 기능 이름이면 `docs/product/{기능}/dev.md`, 없으면 `.harness/lite/{기능}.md`, 경로면 그 파일을 쓴다.
+3. 비어 있으면 `.harness/progress.md`의 하고 있는 일, 그리고 체크 안 된 작업이 남은 `docs/product/*/dev.md`와 `.harness/lite/*.md`를 후보로 보여 주고 고르게 한다.
 4. 개발 스펙이 없는 작은 작업이면 **가벼운 검수**로 간다 (5장).
 
 ## 3. 검수 루프
