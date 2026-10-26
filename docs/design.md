@@ -1,7 +1,8 @@
 # 설계서
 
 > 작성일 2026-10-24 · v2.0 초안
-> product-planning이 무엇을 만들고, 사람과 AI가 어떤 순서로 같이 쓰는지 정한다.
+> harness-kit의 기획·개발 스펙 부분이 무엇을 만들고, 사람과 AI가 어떤 순서로 같이 쓰는지 정한다.
+> 셋업, 구현 검수, 인계는 [작업 방식](workflow.md)에 있다.
 > 레포 문서(작성법·설계·스킬)는 200줄 이하로 쓴다. 결과 스펙 문서는 줄 수 제한이 없다.
 
 ---
@@ -138,6 +139,9 @@
 | `src/` | 문서 읽기, 규칙, 대조, 보고, 내보내기 |
 | `skills/ks-plan/` | 기획 1~4단계를 이끄는 스킬 |
 | `skills/ks-dev/` | 개발 스펙을 이끄는 스킬 |
+| `skills/ks-setup/` `ks-check/` `ks-handoff/` | 셋업, 구현 검수, 인계 ([작업 방식](workflow.md)) |
+| `agents/ks-checker.md` | 읽기 전용 검수 에이전트 |
+| `hooks/hooks.json`, `scripts/hook.mjs` | 세션 시작 때 진행 기록 불러오기, 압축 직전 자동 저장 |
 | `examples/post-edit/` | 끝까지 통과한 예시 |
 
 작업 폴더는 그 프로젝트의 `.product-planning/{feature}/`에 두는 임시 폴더다. git에 올라가지 않고, 네 문서를 내보내면 지워진다. 남는 것은 결과물뿐이다.

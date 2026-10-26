@@ -1,6 +1,6 @@
 {
-  "name": "spec-planning",
-  "description": "기획·개발 스펙 인터뷰 플러그인과 검사 CLI",
+  "name": "harness-kit",
+  "description": "하네스 플러그인(셋업·기획·개발 스펙·검수·인계)과 검사 CLI",
   "type": "module",
   "private": true,
   "engines": {

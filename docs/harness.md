@@ -19,6 +19,8 @@
 | `node scripts/pp.mjs export <폴더> [프로젝트 폴더] [--force] [--keep]` | 결과물을 `<프로젝트>/docs/product/{기능}/`에 내보낸다 (6장) |
 | `node scripts/pp.mjs import <프로젝트 폴더> <폴더>` | 프로젝트의 결과물을 작업 폴더로 다시 읽어 온다 (6장) |
 | `node scripts/pp.mjs discard <폴더>` | 내보내지 않고 작업 폴더를 지운다 |
+| `node scripts/pp.mjs tasks <dev.md 또는 폴더>` | 개발 스펙의 작업(T)과 검증(V)을 JSON으로 낸다 ([작업 방식](workflow.md) 4장) |
+| `node scripts/pp.mjs done <dev.md 또는 폴더> <T번호...>` | 검수를 통과한 작업에 체크를 단다 |
 
 종료 코드는 `0` 완료, `1` 아직 남음, `2` 입력이나 경로 오류다.
 

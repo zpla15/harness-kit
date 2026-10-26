@@ -1,0 +1,12 @@
+{
+  "type": "진행된 팀",
+  "commit": "브랜치 + PR",
+  "track": false,
+  "verify": ["npm test"],
+  "baseline": {
+    "date": "2026-10-26",
+    "passed": 40,
+    "failed": 2,
+    "knownFailures": ["letters.spec.ts > 만료된 편지를 지운다"]
+  }
+}

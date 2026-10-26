@@ -9,6 +9,7 @@ import { citable } from '../src/cite.mjs';
 import { sheet } from '../src/trace.mjs';
 import { discard, exportResult, importResult, keepPrivate } from '../src/export.mjs';
 import { userFlow } from '../src/flow.mjs';
+import { markDone, workItems } from '../src/work.mjs';
 
 const USAGE = `사용법:
   node scripts/pp.mjs init    <폴더> [기능 이름]       지금 단계에 필요한 파일 가운데 없는 것만 빈 틀로 만든다
@@ -22,7 +23,10 @@ const USAGE = `사용법:
                                                        결과물을 <프로젝트>/docs/product/{기능}/에 내보낸다
                                                        (폴더가 <프로젝트>/.product-planning/{기능}/이면 프로젝트는 생략)
   node scripts/pp.mjs import  <프로젝트 폴더> <폴더>   프로젝트의 결과물을 작업 폴더로 다시 읽어 온다
-  node scripts/pp.mjs discard <폴더>                   내보내지 않고 작업 폴더를 지운다`;
+  node scripts/pp.mjs discard <폴더>                   내보내지 않고 작업 폴더를 지운다
+  node scripts/pp.mjs tasks   <dev.md 또는 폴더>       개발 스펙의 작업(T)과 검증(V)을 JSON으로 낸다
+  node scripts/pp.mjs done    <dev.md 또는 폴더> <T번호...>
+                                                       검수를 통과한 작업에 체크를 단다`;
 
 const TEMPLATES = {
   brief: (name, feature) => `# ${name} 비즈니스 요구사항\n\n상태: 작성중\n기능: ${feature}\n\n## 왜 지금\n\n## 목표\n\n## 비즈니스 요구사항\n\n## 범위 밖\n\n## 제약\n\n## 정할 것\n`,
@@ -82,7 +86,7 @@ function quotes(folder) {
 }
 
 function run([command, first, ...rest]) {
-  const commands = ['init', 'check', 'lock', 'unlock', 'sheet', 'quotes', 'flow', 'export', 'import', 'discard'];
+  const commands = ['init', 'check', 'lock', 'unlock', 'sheet', 'quotes', 'flow', 'export', 'import', 'discard', 'tasks', 'done'];
   if (!command || !first || !commands.includes(command)) {
     console.error(USAGE);
     return 2;
@@ -128,6 +132,17 @@ function run([command, first, ...rest]) {
     const { spec } = load(first);
     if (!spec) throw new InputError('spec.md가 없다. PRD를 확정하고 init으로 만든다.');
     console.log(userFlow(spec));
+    return 0;
+  }
+  if (command === 'tasks') {
+    const work = workItems(first);
+    console.log(JSON.stringify(work, null, 2));
+    return work.left.length ? 1 : 0;
+  }
+  if (command === 'done') {
+    if (!args.length) throw new InputError('체크할 작업 번호가 필요하다. 예: done docs/product/post-edit T1 T2');
+    const result = markDone(first, args);
+    console.log(`체크했다: ${result.done.join(', ')} (${result.path})`);
     return 0;
   }
   if (command === 'quotes') {

@@ -20,7 +20,7 @@ const PLAN_PART = ['페르소나', '요구사항'];
 
 export const resultDir = (project, feature) => join(project, 'docs', 'product', feature);
 export const WORK_DIR = '.product-planning';
-const IGNORE = '# product-planning 작업 파일. 결과물을 내보내면 지워진다.\n*\n';
+const IGNORE = '# harness-kit 기획 작업 파일. 결과물을 내보내면 지워진다.\n*\n';
 
 // 작업 폴더가 <프로젝트>/.product-planning/{feature}/이면 그 프로젝트, 아니면 null.
 export function projectOf(folder) {

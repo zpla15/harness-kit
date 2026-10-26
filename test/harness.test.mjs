@@ -236,7 +236,7 @@ test('CLI: 종료 코드, 단계마다 init, quotes', () => {
 });
 
 test('레포 문서는 200줄 이하다', () => {
-  for (const file of ['docs/design.md', 'docs/brief-guide.md', 'docs/planning-guide.md', 'docs/spec-guide.md', 'docs/dev-guide.md', 'docs/harness.md', 'skills/ks-plan/SKILL.md', 'skills/ks-dev/SKILL.md']) {
+  for (const file of ['docs/design.md', 'docs/brief-guide.md', 'docs/planning-guide.md', 'docs/spec-guide.md', 'docs/dev-guide.md', 'docs/harness.md', 'docs/workflow.md', 'skills/ks-plan/SKILL.md', 'skills/ks-dev/SKILL.md', 'skills/ks-setup/SKILL.md', 'skills/ks-check/SKILL.md', 'skills/ks-handoff/SKILL.md', 'agents/ks-checker.md']) {
     const lines = readFileSync(new URL(`../${file}`, import.meta.url), 'utf8').split('\n').length;
     assert.ok(lines <= 200, `${file} ${lines}줄`);
   }

@@ -1,0 +1,29 @@
+{
+  "description": "harness-kit: 세션 시작 때 진행 기록 불러오기, 대화 압축 직전 자동 저장",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs\" session-start",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "manual|auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/hook.mjs\" pre-compact",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}
