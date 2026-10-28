@@ -9,6 +9,7 @@
 [기획](docs/planning-guide.md) ·
 [상세 스펙](docs/spec-guide.md) ·
 [개발 스펙](docs/dev-guide.md) ·
+[인터뷰 레벨](docs/levels.md) ·
 [검사 CLI](docs/harness.md)
 
 ---
@@ -59,8 +60,8 @@
 **③ 기능 하나 만들기**
 
 ```text
-/ks-plan 게시글을 지우지 않고 고칠 수 있게 하고 싶다     ← 기획 인터뷰
-/ks-dev post-edit                                       ← 개발 스펙 인터뷰
+/ks-plan 게시글을 지우지 않고 고칠 수 있게 하고 싶다     ← 기획 인터뷰 (먼저 레벨 1~5를 묻는다)
+/ks-dev 3 post-edit                                     ← 개발 스펙 인터뷰 (레벨 3으로)
 "T1부터 만들어줘"                                        ← 코딩은 평소처럼
 /ks-check post-edit                                     ← 스펙대로 됐는지 검수
 /ks-handoff                                             ← 기록 정리, 커밋·PR
@@ -72,11 +73,13 @@
 |---|---|
 | `/ks-setup` | 프로젝트에서 처음 쓸 때. 다시 부르면 설정을 보여 주고 바꿀지 묻는다 |
 | `/ks-lite <하고 싶은 것 대충>` | 문서까지 만들 일은 아닐 때. 빠진 것을 역질문으로 채우고 결론을 내 준다 |
-| `/ks-plan <만들고 싶은 것 한 줄>` | 새 기능 기획을 시작하거나, 하다 만 기획을 이어 갈 때 |
+| `/ks-plan [레벨] <만들고 싶은 것 한 줄>` | 새 기능 기획을 시작하거나, 하다 만 기획을 이어 갈 때 |
 | `/ks-plan <기능 영어 이름>` | 이미 내보낸 기획을 고칠 때 (결과물을 다시 불러온다) |
-| `/ks-dev <기능 영어 이름>` | 기획 확정 뒤 개발 스펙을 쓸 때. 기획이 덜 됐으면 기획부터 이어 간다 |
+| `/ks-dev [레벨] <기능 영어 이름>` | 기획 확정 뒤 개발 스펙을 쓸 때. 기획이 덜 됐으면 기획부터 이어 간다 |
 | `/ks-check [기능]` | 구현이 끝났다고 말하기 전, 커밋·PR 전에. 비우면 남은 작업에서 고른다 |
 | `/ks-handoff [남길 말]` | 오늘 여기까지, 한 작업 단위가 끝났을 때 |
+
+`/ks-plan`, `/ks-dev`는 처음에 **인터뷰 레벨(1~5)** 을 숫자로 받는다. 5는 칸마다 묻는 지금까지의 방식, 낮을수록 AI가 초안을 쓰고 사람은 모아서 확인한다. 검사 기준은 같다. 자세한 건 [인터뷰 레벨](docs/levels.md).
 
 작은 수정이나 버그는 기획 없이 바로 코딩하고 `/ks-check`(가벼운 검수) → `/ks-handoff`로 끝낸다.
 
@@ -297,7 +300,7 @@ flowchart LR
 ```text
 <프로젝트>/
 ├─ .product-planning/{기능}/   ← 작업 중 임시 폴더 (자동 .gitignore, 끝나면 삭제)
-│   brief.md  plan.md  lock.json  spec.md  trace.json  dev.md
+│   brief.md  plan.md  lock.json  spec.md  trace.json  dev.md  level.txt
 └─ docs/product/{기능}/        ← 남는 결과물
     prd.md  spec.md  flow.md  dev.md
 ```
@@ -430,7 +433,7 @@ harness-kit/
 │  ├─ pp.mjs          검사 CLI 진입점
 │  └─ hook.mjs        훅 진입점
 ├─ src/               파서(brief, plan, spec, dev), 유저 플로우, 대조, 링크, 내보내기, 작업(work), 인계(handoff)
-├─ docs/              작업 방식, 설계서, 단계별 작성법 (각 200줄 이하)
+├─ docs/              작업 방식, 설계서, 단계별 작성법, 인터뷰 레벨 (각 200줄 이하)
 ├─ examples/post-edit 기획·개발 스펙을 끝까지 통과한 예시 (게시글 수정)
 └─ test/              node --test (검사 규칙, 작업·훅, 깨진 입력 fuzz)
 ```

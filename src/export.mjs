@@ -13,7 +13,9 @@ import { flowDocument } from './flow.mjs';
 
 export const OUTPUTS = { prd: 'prd.md', spec: 'spec.md', flow: 'flow.md', dev: 'dev.md' };
 const TITLES = { prd: '기획 PRD', spec: '기획 상세 스펙', flow: '유저 플로우', dev: '개발 스펙' };
-const WORK_FILES = new Set(Object.values(FILES));
+// level.txt는 인터뷰 레벨(docs/levels.md)이다. 검사에는 쓰지 않고 작업 폴더와 함께 지운다.
+export const LEVEL_FILE = 'level.txt';
+const WORK_FILES = new Set([...Object.values(FILES), LEVEL_FILE]);
 const BRIEF_PART = ['왜 지금', '목표', '비즈니스 요구사항'];
 const BRIEF_TAIL = ['범위 밖', '제약'];
 const PLAN_PART = ['페르소나', '요구사항'];

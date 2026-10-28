@@ -315,6 +315,8 @@ test('discard: 하네스 파일만 든 폴더만 지운다', () => {
   assert.equal(spawnSync('node', [CLI, 'discard', stray]).status, 2);
   assert.equal(existsSync(stray), true);
   const dir = copyExample();
-  assert.equal(spawnSync('node', [CLI, 'discard', dir]).status, 0);
+  writeFileSync(join(dir, 'level.txt'), '3\n');
+  assert.equal(spawnSync('node', [CLI, 'check', dir]).status, 0, '인터뷰 레벨 파일은 검사에 영향이 없다');
+  assert.equal(spawnSync('node', [CLI, 'discard', dir]).status, 0, '인터뷰 레벨 파일은 하네스 파일이다');
   assert.equal(existsSync(dir), false);
 });
